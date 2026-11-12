@@ -1,0 +1,21 @@
+services:
+  db:
+    build: .
+    container_name: loja_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: loja_user
+      POSTGRES_PASSWORD: loja_pass
+      POSTGRES_DB: loja
+    ports:
+      - "5432:5432"
+    volumes:
+      - loja_dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loja_user -d loja"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  loja_dados:
